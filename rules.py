@@ -4,15 +4,15 @@ utterance_response = [
         ["Hello %1, How are you today ?", ]
     ],
     [
-        r"hi|hey|hello",
-        ["Hello", "Hey there", ]
+        r"hi|hey|hello|howdy|sup",
+        ["Hello", "Hey there", "Hi", ]
     ],
     [
-        r"what is your name ?",
+        r"what is your name",
         ["My name is PokeBot! ", ]
     ],
     [
-        r"how are you ?",
+        r"how are you",
         ["I'm doing good.\nHow about You?", ]
     ],
     [
@@ -20,23 +20,15 @@ utterance_response = [
         ["Its alright", "Its OK, never mind", ]
     ],
     [
-        r"I am fine",
-        ["Great to hear that, How can I help you?", ]
+        r"i am fine|i am (.*) doing good",
+        ["Great to hear that, How can I help you?", "Nice to hear that, How can I help you? :)", ]
     ],
     [
-        r"i'm (.*) doing good",
-        ["Nice to hear that", "How can I help you? :)", ]
-    ],
-    [
-        r"(.*) age?",
+        r"(.*) age",
         ["I'm a computer program. I have no idea ;)", ]
     ],
     [
-        r"what (.*) want ?",
-        ["Make me an offer I can't refuse", ]
-    ],
-    [
-        r"(.*) created ?",
+        r"(.*) created",
         ["Swanora created me using Python's NLTK library ", "top secret ;)", ]
     ],
     [

@@ -24,11 +24,13 @@ CONTRACTION_MAP = {
 "he'd": "he would",
 "he'd've": "he would have",
 "he'll": "he will",
-"he'll've": "he he will have",
+"he'll've": "he will have",
 "he's": "he is",
 "how'd": "how did",
 "how'd'y": "how do you",
 "how'll": "how will",
+"how'r": "how are",
+"how're": "how are",
 "how's": "how is",
 "I'd": "I would",
 "I'd've": "I would have",
@@ -130,3 +132,23 @@ CONTRACTION_MAP = {
 "you're": "you are",
 "you've": "you have"
 }
+
+
+# taken from text_normalizer.py from class lessons
+def expand_contractions(text, contraction_mapping=CONTRACTION_MAP):
+    import re
+    
+    contractions_pattern = re.compile('({})'.format('|'.join(contraction_mapping.keys())), 
+                                      flags=re.IGNORECASE|re.DOTALL)
+    def expand_match(contraction):
+        match = contraction.group(0)
+        first_char = match[0]
+        expanded_contraction = contraction_mapping.get(match)\
+                                if contraction_mapping.get(match)\
+                                else contraction_mapping.get(match.lower())                       
+        expanded_contraction = first_char+expanded_contraction[1:]
+        return expanded_contraction
+        
+    expanded_text = contractions_pattern.sub(expand_match, text)
+    expanded_text = re.sub("'", "", expanded_text)
+    return expanded_text
