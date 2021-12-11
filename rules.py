@@ -4,7 +4,7 @@ utterance_response = [
         ["Hello %1, How are you today ?", ]
     ],
     [
-        r"hi|hey|hello|howdy|sup",
+        r"hi|hey|hello|howdy|sup|wassup",
         ["Hello", "Hey there", "Hi", ]
     ],
     [
@@ -34,5 +34,9 @@ utterance_response = [
     [
         r"quit",
         ["Bye take care. See you soon :) ", "It was nice talking to you. See you soon :)"]
+    ],
+    [
+        r"i want to know about (.*) | tell me about (.*) | which pokemon is (.*)",
+        ["Here's what I know about %1: ", "Alright, %1 is: "]
     ],
 ]
