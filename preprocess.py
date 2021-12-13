@@ -4,6 +4,7 @@ import numpy as np
 import re
 import unicodedata
 
+
 ignore = ['?', '!', ',', '.', ';', '(', ')', '[', ']', '{', '}', '<', '>', '+', '-', '*', '/', '=', '&', '|', '^', '%',
           '$', '#', '@', '~', '`', '!', '_', '\\', '\'', '\"']
 
@@ -17,6 +18,7 @@ def tokenize(sentence):
     # remove punctuation
     remove_punctuation(message)
     return nltk.word_tokenize(message)
+
 
 def remove_punctuation(normalized_message):
     re.sub(r'[^\w\s]', '', normalized_message)
@@ -58,6 +60,7 @@ def normalize_user_input(user_input):
 def normalize(tokenized_sentence):
     message = lemmatize(tokenized_sentence)
     message = stem(message)
+    message = remove_stop_words(message)
     return remove_single_characters(message)
 
 

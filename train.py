@@ -1,41 +1,73 @@
 import json
-import normalize as norm
-import numpy as np
+import re
+import pandas as pd
+from preprocess import normalize_user_input as normalize
+import pypokedex as pdx
+
 
 with open('utterance_response.json') as file:
     data = json.load(file)
 
-all_words = []
-tags = []
-docs_x = []
-docs_y = []
-xy = []
+pokemon_df = pd.read_csv('pokemon.csv')
+pokemon_names = [name.lower() for name in pokemon_df['NAME']]
+pokemon_name = ""
 
-for intent in data['utterance_response']:
-    tag = intent['tag']
-    if tag not in tags:
-        tags.append(intent['tag'])
+def bot(utterances, responses):
+    global pokemon_name
+    while True:
+        user_input = input("You: ")
+        user_input = user_input.lower()
+        matched_intent = None
 
-    for pattern in intent['patterns']:
-        words = norm.tokenize(pattern)
-        all_words.extend(words)
-        docs_x.append(words)
-        docs_y.append(tag)
-        xy.append((words, tag))
+        for intent, pattern in utterances.items():
+            if re.search(pattern, user_input):
+                matched_intent = intent
+                break
+            else:
+                user_input = normalize(user_input)
+                for word in user_input:
+                    if word in pokemon_names or word.isnumeric():
+                        pokemon_name = word
+                        matched_intent = 'pokemon'
+                break
 
-all_words = norm.normalize(all_words)
-all_words = sorted(set(all_words))
-tags = sorted(set(tags))
-print(all_words)
-# print(tags)
+        if matched_intent in responses:
+            key = matched_intent
+            print(responses[key])
 
-# X_train = []
-# Y_train = []
-# for (pattern_sentence, tag) in xy:
-#     bag = norm.bag_of_words(pattern_sentence, all_words)
-#     X_train.append(bag)
-#     label = tags.index(tag)
-#     Y_train.append(label)
-#
-# X_train = np.array(X_train)
-# Y_train = np.array(Y_train)
+            if key == 'pokemon':
+                pokemon = pdx.get(name=pokemon_name)
+                print(pokemon.name)
+        else:
+            print("Sorry, I don't understand")
+
+
+def train():
+    intents = {}
+    keywords_dict = {}
+    responses_dict = {}
+
+    for intent in data['utterance_response']:
+        tag = intent['tag']
+        intents[tag] = []
+        for pattern in intent['patterns']:
+            pattern = pattern.lower()
+            pattern = normalize(pattern)
+            intents[tag].extend('.*\\b'+pat+'\\b.*' for pat in pattern)
+        for response in intent['responses']:
+            responses_dict[tag] = response
+    for intent, keys in intents.items():
+        keywords_dict[intent] = re.compile('|'.join(keys))
+
+    return keywords_dict, responses_dict
+
+
+def main():
+    print("Welcome to pokeBot!")
+    print("Let's talk about your Pokemon!")
+    utt, resp = train()
+    bot(utt, resp)
+
+
+if __name__ == "__main__":
+    main()

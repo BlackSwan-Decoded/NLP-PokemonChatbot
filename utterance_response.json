@@ -70,26 +70,25 @@
                 "I'm called"
             ],
             "responses": [
-                "Nice to meet you {0}",
-                "Hi {0}"
+                "Nice to meet you",
+                "Hi (.*)"
             ],
             "context_set": "name"
         },
         {
             "tag": "pokemon",
             "patterns": [
-                "Which pokemon is",
-                "What is",
-                "Tell me about",
-                "I want to know about",
-                "I want to know more about"
+                "which pokemon is ",
+                "what is ",
+                "tell me about ",
+                "i want to know about ",
+                "i want to know more about "
             ],
             "responses": [
-                "Here's what I know about {0}",
-                "Alright, here's what I know about {0}",
-                "Alright, {0} is",
-                "No problem! Let me get that for you",
-                "{0} is"
+                "Here's what I know",
+                "Alright, here's what I know",
+                "Sure",
+                "No problem! Let me get that for you"
             ],
             "context_set": "pokemon"
         }
