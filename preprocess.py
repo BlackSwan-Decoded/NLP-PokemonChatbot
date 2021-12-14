@@ -52,7 +52,6 @@ def normalize(sentence):
     # remove single characters
     words = remove_single_characters(words)
     # return the normalized message
-    print(words)
     return words
 
 
