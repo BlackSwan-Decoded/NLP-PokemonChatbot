@@ -71,7 +71,7 @@
             ],
             "responses": [
                 "Nice to meet you",
-                "Hi (.*)"
+                "Hi"
             ],
             "context_set": "name"
         },

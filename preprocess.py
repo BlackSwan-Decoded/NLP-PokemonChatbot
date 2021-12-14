@@ -5,63 +5,55 @@ import re
 import unicodedata
 
 
-ignore = ['?', '!', ',', '.', ';', '(', ')', '[', ']', '{', '}', '<', '>', '+', '-', '*', '/', '=', '&', '|', '^', '%',
-          '$', '#', '@', '~', '`', '!', '_', '\\', '\'', '\"']
-
-
 def tokenize(sentence):
     # replace contractions with full words
-    message = expand_contractions(sentence).lower()
-    # message = user_input.lower()what's
+    sentence = expand_contractions(sentence)
     # remove non-ascii characters
-    message = unicodedata.normalize('NFKD', message).encode('ascii', 'ignore').decode('utf-8', 'ignore')
+    sentence = unicodedata.normalize('NFKD', sentence).encode('ascii', 'ignore').decode('utf-8', 'ignore')
     # remove punctuation
-    remove_punctuation(message)
-    return nltk.word_tokenize(message)
+    remove_punctuation(sentence)
+    # tokenize into words
+    return nltk.word_tokenize(sentence)
 
 
-def remove_punctuation(normalized_message):
-    re.sub(r'[^\w\s]', '', normalized_message)
+def expand_sentence(sentence):
+    return expand_contractions(sentence).lower()
 
 
-def remove_stop_words(normalized_message):
-    return [word for word in normalized_message if word not in nltk.corpus.stopwords.words('english')]
+def remove_punctuation(sentence):
+    re.sub(r'[^\w\s]', '', sentence)
 
 
-def lemmatize(normalized_sentence):
-    return [nltk.stem.WordNetLemmatizer().lemmatize(word) for word in normalized_sentence]
+def remove_stop_words(sentence):
+    return [word for word in sentence if word not in nltk.corpus.stopwords.words('english')]
 
 
-def stem(normalized_message):
-    return [nltk.stem.PorterStemmer().stem(word) for word in normalized_message]
+def lemmatize(sentence):
+    return [nltk.stem.WordNetLemmatizer().lemmatize(word) for word in sentence]
 
 
-def remove_single_characters(normalized_sentence):
-    return [word for word in normalized_sentence if (len(word) > 1 or word.isnumeric())]
+def stem(sentence):
+    return [nltk.stem.PorterStemmer().stem(word) for word in sentence]
 
 
-def normalize_user_input(user_input):
-    # tokenize
-    message = tokenize(user_input)
+def remove_single_characters(sentence):
+    return [word for word in sentence if (len(word) > 1 or word.isnumeric())]
+
+
+def normalize(sentence):
+    # tokenize message
+    words = tokenize(sentence.lower())
     # remove stopwords
-    message = remove_stop_words(message)
+    words = remove_stop_words(words)
     # lemmatize
-    message = lemmatize(message)
+    words = lemmatize(words)
     # stem
-    message = stem(message)
+    words = stem(words)
     # remove single characters
-    message = remove_single_characters(message)
-    # remove words that are not in the rules.py dictionary
-    # message = [word for word in message if word in rules.utterance_response]
+    words = remove_single_characters(words)
     # return the normalized message
-    return message
-
-
-def normalize(tokenized_sentence):
-    message = lemmatize(tokenized_sentence)
-    message = stem(message)
-    message = remove_stop_words(message)
-    return remove_single_characters(message)
+    print(words)
+    return words
 
 
 def bag_of_words(tokenized_sentence, words):
