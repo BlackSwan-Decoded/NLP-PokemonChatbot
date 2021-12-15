@@ -1,0 +1,97 @@
+{
+    "utterance_response": [
+        {
+            "tag": "greeting",
+            "patterns": [
+                "Hi",
+                "Hey",
+                "Hello",
+                "Hey there",
+                "Howdy",
+                "Sup",
+                "Wassup",
+                "What's up",
+                "What's good"
+            ],
+            "responses": [
+                "Hey there!",
+                "Hi!",
+                "Hello!",
+                "Hello, thanks for stopping by"
+            ]
+        },
+        {
+            "tag": "goodbye",
+            "patterns": [
+                "Bye",
+                "Goodbye",
+                "See you later",
+                "See you",
+                "See ya",
+                "Catch ya",
+                "Catch you later",
+                "Quit",
+                "Quit talking",
+                "Quit talking to me"
+            ],
+            "responses": [
+                "Bye!",
+                "Goodbye!",
+                "See you later!",
+                "Bye take care. See you soon :) ",
+                "It was nice talking to you. See you soon :)"
+            ]
+        },
+        {
+            "tag": "thanks",
+            "patterns": [
+                "Thanks",
+                "Thank you",
+                "Thank you so much",
+                "That's very kind of you",
+                "That's helpful",
+                "That's very helpful"
+            ],
+            "responses": [
+                "You're welcome!",
+                "No problem!",
+                "You're welcome!",
+                "Any time!",
+                "My pleasure!"
+            ]
+        },
+        {
+            "tag": "name",
+            "patterns": [
+                "My name is",
+                "I am",
+                "I'm",
+                "I am called",
+                "I'm called"
+            ],
+            "responses": [
+                "Nice to meet you",
+                "Hi"
+            ],
+            "context_set": "name"
+        },
+        {
+            "tag": "pokemon",
+            "patterns": [
+                "which pokemon is ",
+                "what is ",
+                "tell me about ",
+                "i want to know about ",
+                "i want to know more about "
+            ],
+            "responses": [
+                "Here's what I know",
+                "Alright, here's what I know",
+                "Sure",
+                "No problem! Let me get that for you"
+            ],
+            "context_set": "pokemon"
+        }
+    ]
+}
+
