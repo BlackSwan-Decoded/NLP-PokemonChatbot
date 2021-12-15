@@ -1,7 +1,5 @@
-import pandas as pd
-
 from contractions import expand_contractions
-from sklearn.feature_extraction.text import CountVectorizer
+
 import nltk
 import re
 import unicodedata
@@ -55,11 +53,3 @@ def normalize(sentence):
     words = remove_single_characters(words)
     # return the normalized message
     return words
-
-
-def bag_of_words(tokenized_sentence, labels):
-    # get bag of words features in sparse format
-    cv = CountVectorizer(min_df=0., max_df=1.)
-    cv_matrix = cv.fit_transform(tokenized_sentence)
-    df = pd.DataFrame(cv_matrix.toarray(), columns=labels)
-    return df

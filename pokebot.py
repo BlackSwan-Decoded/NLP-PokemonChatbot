@@ -2,10 +2,12 @@ import pypokedex
 import tkinter as tk
 import urllib3
 
-from chat import get_response, bot_name
 from io import BytesIO
 from PIL import Image, ImageTk
+from pokechat import get_response, bot_name
 
+
+"""UI for the PokeBot credits to Python Engineer @ https://www.youtube.com/watch?v=RNEcewpVZUQ"""
 BG_GRAY_COLOR = '#ABB2B9'
 BG_COLOR = '#17202A'
 TEXT_COLOR = '#EAECEE'
@@ -19,67 +21,68 @@ class PokeBot(tk.Tk):
         self.window = tk.Tk()
         self._setup_main_window()
 
-        self.pokedex = pypokedex.Pokedex()
-
-        self.text_input = tk.Text(self, bg=BG_COLOR, fg=TEXT_COLOR, font=FONT, height=1, width=50)
-        self.text_input.pack(side=tk.BOTTOM, fill=tk.X)
-
-        self.text_output = tk.Text(self, bg=BG_COLOR, fg=TEXT_COLOR, font=FONT, height=10, width=50)
-        self.text_output.pack(side=tk.TOP, fill=tk.X)
-
-        self.img_output = tk.Label(self, bg=BG_COLOR)
-        self.img_output.pack(side=tk.TOP, fill=tk.X)
-
-        self.text_input.bind("<Return>", self.on_enter)
-
-        self.text_input.focus_set()
-
-
     def _setup_main_window(self):
         self.window.title("Chat with PokeBot")
-        self.window.rezizable(False, False)
+        self.window.resizable(False, False)
         self.window.configure(width=470, height=550, bg=BG_GRAY_COLOR)
         self.window.config(padx=10, pady=10)
 
         # TITLE
         title_label = tk.Label(self.window, bg=BG_COLOR, fg=TEXT_COLOR, text="PokeBot",
-                              font=FONT_BOLD, padx=10, pady=10)
+                               font=FONT_BOLD, padx=10, pady=10)
         title_label.place(relwidth=1, relheight=0.1)
 
-        divider = Label(self.window, width=450, bg=BG_GRAY_COLOR, height=2)
+        # DIVIDER
+        divider = tk.Label(self.window, width=450, bg=BG_GRAY_COLOR, height=2)
         divider.place(relwidth=1, relheight=0.01, relx=0, rely=0.07)
 
         # TEXT INPUT
-        self.text_widget = tk.Text(self.window, bg=BG_COLOR, fg=TEXT_COLOR, font=FONT, height=2, width=20)
+        self.text_widget = tk.Text(self.window, bg=BG_COLOR, fg=TEXT_COLOR, font=FONT,
+                                   height=2, width=20, padx=5, pady=5)
+        self.text_widget.place(relwidth=1, relheight=0.745, relx=0, rely=0.08)
+        self.text_widget.configure(cursor="arrow", state=tk.DISABLED)
+
+        # SCROLLBAR
+        scrollbar = tk.Scrollbar(self.text_widget)
+        scrollbar.place(relheight=1, relx=0.974)
+        scrollbar.configure(command=self.text_widget.yview)
+
+        # BOTTOM LABEL
+        bottom_label = tk.Label(self.window, bg=BG_GRAY_COLOR, height=80)
+        bottom_label.place(relwidth=1, rely=0.825)
+
+        # MESSAGE BOX
+        self.msg_entry = tk.Entry(bottom_label, bg="#2C3E50", fg=TEXT_COLOR, font=FONT)
+        self.msg_entry.place(relwidth=0.74, relheight=0.06, rely=0.008, relx=0.011)
+        self.msg_entry.focus()
+        self.msg_entry.bind("<Return>", self._on_enter)
+
+        # SEND BUTTON
+        send_button = tk.Button(bottom_label, text="Send", bg=BG_GRAY_COLOR, fg=TEXT_COLOR, font=FONT_BOLD,
+                                width=20, command=lambda: self._on_enter(self.msg_entry.get()))
+        send_button.place(relwidth=0.22, relheight=0.06, rely=0.008, relx=0.77)
 
 
+    def _on_enter(self, event):
+        msg = self.msg_entry.get()
+        self._insert_message(msg, "You: ")
 
-    # Function to get the pokemon image
-    def get_pokemon_image():
-        # pypokedex.set_api_key("pkdx")
-        # pypokedex.set_locale("en")
-        pokemon = pypokedex.get(name=text_id_name.get(1.0, "end-1c"))
-        sprite = pokemon.sprites.front.get("default")
-        http = urllib3.PoolManager()
-        response = http.request('GET', sprite)
-        image = Image.open(BytesIO(response.data))
+    def _insert_message(self, msg, sender):
+        if not msg:
+            return
 
-        img = ImageTk.PhotoImage(image)
-        pokemon_image.config(image=img)
-        pokemon_image.image = img
+        self.msg_entry.delete(0, tk.END)
+        msg1 = f"{sender}: {msg}\n\n"
+        self.text_widget.configure(state=tk.NORMAL)
+        self.text_widget.insert(tk.END, msg1)
+        self.text_widget.configure(state=tk.DISABLED)
 
-        pokemon_information.config(text=f"{pokemon.dex} - {pokemon.name}".title())
-        pokemon_types.config(text="-".join([poke_type for poke_type in pokemon.types]).title())
+        msg2 = f"{bot_name}: {get_response(msg)}\n\n"
+        self.text_widget.configure(state=tk.NORMAL)
+        self.text_widget.insert(tk.END, msg2)
+        self.text_widget.configure(state=tk.DISABLED)
 
-
-        label_id_name = tk.Label(window, text="Pokemon  or Name:", font=("Arial", 20))
-        label_id_name.pack(padx=10, pady=10)
-
-        text_id_name = tk.Text(window, height=1, font=("Arial", 16))
-        text_id_name.pack(padx=10, pady=10)
-
-        btn_load = tk.Button(window, text="Load Pokemon", font=("Arial", 14), command=get_pokemon_image)
-        btn_load.pack(padx=10, pady=10)
+        self.text_widget.see(tk.END)
 
     def run(self):
         self.window.mainloop()
