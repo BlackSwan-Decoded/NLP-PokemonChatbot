@@ -8,12 +8,12 @@ from pokechat import get_response, bot_name
 
 
 """UI for the PokeBot credits to Python Engineer @ https://www.youtube.com/watch?v=RNEcewpVZUQ"""
-BG_GRAY_COLOR = '#ABB2B9'
-BG_COLOR = '#17202A'
+BG_GRAY_COLOR = '#37796C'
+BG_COLOR = '#0C3348'
+SEND_BUTTON_COLOR = '#E54222'
 TEXT_COLOR = '#EAECEE'
-
-FONT = "Helvetica 14"
-FONT_BOLD = "Helvetica 12 bold"
+FONT = "Helvetica 10"
+FONT_BOLD = "Arial 14 bold"
 
 
 class PokeBot(tk.Tk):
@@ -24,7 +24,7 @@ class PokeBot(tk.Tk):
     def _setup_main_window(self):
         self.window.title("Chat with PokeBot")
         self.window.resizable(False, False)
-        self.window.configure(width=470, height=550, bg=BG_GRAY_COLOR)
+        self.window.configure(width=570, height=650, bg=BG_GRAY_COLOR)
         self.window.config(padx=10, pady=10)
 
         # TITLE
@@ -58,7 +58,7 @@ class PokeBot(tk.Tk):
         self.msg_entry.bind("<Return>", self._on_enter)
 
         # SEND BUTTON
-        send_button = tk.Button(bottom_label, text="Send", bg=BG_GRAY_COLOR, fg=TEXT_COLOR, font=FONT_BOLD,
+        send_button = tk.Button(bottom_label, text="Send", bg=SEND_BUTTON_COLOR, fg=TEXT_COLOR, font=FONT_BOLD,
                                 width=20, command=lambda: self._on_enter(self.msg_entry.get()))
         send_button.place(relwidth=0.22, relheight=0.06, rely=0.008, relx=0.77)
 

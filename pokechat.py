@@ -41,8 +41,7 @@ def get_response(user_input):
         key = matched_intent
 
         if key == 'goodbye':
-            return random.choice(responses[key])
-            # exit()
+            exit(random.choice(responses[key]))
 
         if key == 'name':
             return f"{random.choice(responses[key])} {user_input[1].title()}!"
@@ -58,12 +57,16 @@ def get_response(user_input):
 def get_pokemon(pokemon_name):
     try:
         pokemon = pdx.get(name=pokemon_name)
-        response = f"Your pokemon is {pokemon.name.title()}!" \
-                   f"\nIt's type is {pokemon.types[0].title()}!" \
-                   f"\nIt's height is {pokemon.height}!" \
-                   f"\nIt's weight is {pokemon.weight}!" \
-                   f"\nIt's base experience is {pokemon.base_experience}!" \
-                   f"\nIt's abilities are {pokemon.abilities[0]}!"
+        response = f"Meet {pokemon.name.title()}!" \
+                   f"\n{pokemon.name.title()} has these attributes:" \
+                   f"\nType: {pokemon.types[0].title()}!" \
+                   f"\nHeight: {pokemon.height}!" \
+                   f"\nWeight is {pokemon.weight}!" \
+                   f"\nBase Experience is {pokemon.base_experience}!" \
+                   f"\nAbilities are {pokemon.abilities[0].name, pokemon.abilities[1].name}!" \
+                   f"\nStats are hp={pokemon.base_stats[0]}, attack={pokemon.base_stats[1]}, defense" \
+                   f"={pokemon.base_stats[2]}, sp_atk={pokemon.base_stats[3]}, sp_def={pokemon.base_stats[4]}," \
+                   f"speed={pokemon.base_stats[5]}"
     except:
         response = "\tSorry, I don't know that Pokemon."
 
