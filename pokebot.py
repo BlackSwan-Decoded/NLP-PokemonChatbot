@@ -1,9 +1,5 @@
-import pypokedex
 import tkinter as tk
-import urllib3
 
-from io import BytesIO
-from PIL import Image, ImageTk
 from pokechat import get_response, bot_name
 
 
